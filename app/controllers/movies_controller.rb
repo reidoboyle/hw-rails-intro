@@ -5,18 +5,26 @@ class MoviesController < ApplicationController
       @movie = Movie.find(id) # look up movie by unique ID
       # will render app/views/movies/show.<extension> by default
     end
-  
+    
     def index
+      @all_ratings = Movie.ratings
+      @checks = Movie.checked
       @movies = Movie.order("#{params[:sort_by]}")
-      ordered = params[:sort_by]
+      if params[:commit]
+        @movies = @movies.with_ratings(params[:ratings])
+        @checks = Movie.update_check(@checks,params[:ratings])
+      end
+      
+      
       @rel = false
       @tit = false
-      if ordered == "release_date"
+      if params[:sort_by] == "release_date"
         @rel = true
       end
-      if ordered == "title"
+      if params[:sort_by] == "title"
         @tit = true
       end
+      
     end
     
     def new
