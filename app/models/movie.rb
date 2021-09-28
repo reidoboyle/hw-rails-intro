@@ -9,13 +9,13 @@ class Movie < ActiveRecord::Base
     
     def self.update_check(checked,ratings)
         checked.each {|key,value| checked[key] = false}
-        ratings.keys.each do |val|
+        ratings.each do |val|
             checked[val] = true
         end
         return checked
     end
     
     def self.with_ratings(ratings)
-       where(rating: ratings.keys)
+       where(rating: ratings)
     end
 end
