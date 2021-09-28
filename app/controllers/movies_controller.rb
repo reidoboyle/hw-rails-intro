@@ -11,6 +11,11 @@ class MoviesController < ApplicationController
       @checks = Movie.checked
       @rel = false
       @tit = false
+      
+      if (!params.has_key?(:ratings)) and (!session.has_key?(:ratings))
+        session[:ratings] = Movie.inital_ratings
+      end
+      
       if params[:sort_by] == "release_date"
         session[:sort_by] = "release_date"
       elsif params[:sort_by] == "title"
